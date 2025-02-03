@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canele</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Neucha&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        pacifico: ['Pacifico', 'cursive'],
+                        neucha: ['Neucha', 'cursive'],
+                    },
+                    colors: {
+                        'canele-brown': '#a4721f',
+                        'canele-red': '#5f021f',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-screen flex flex-col font-neucha bg-cover bg-no-repeat bg-fixed" style="background-image: url('assets/cannele.jpg')">
+    <header class="w-full bg-white px-4 py-1">
+        <h1 class="font-pacifico text-canele-red">Canelé Clicker</h1>
+    </header>
+    <div class="flex flex-1">
+        <!-- Left side - Clickable Canelé -->
+        <div class="w-2/3 flex items-center justify-center">
+            <img id="start-oven" src="assets/bouchee2-1.png" alt="Canelé" 
+                class="w-64 h-64 object-contain cursor-pointer hover:scale-105 transition-transform active:scale-95"
+                onclick="cookCanele()">
+        </div>
+        
+        <!-- Right side - Upgrades -->
+        <div class="w-1/3 bg-white bg-opacity-90 p-4">
+            <p class="mb-4">Vous avez <span class="text-canele-brown">0</span> cannelés</p>
+            <button id="stop-oven" class="w-full font-neucha px-4 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-100 mb-2">
+                Acheter un four (25 cannelés)
+            </button>
+        </div>
+    </div>
+    <script src="cuisson.js"></script>
+</body>
+</html>
