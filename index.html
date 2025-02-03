@@ -31,18 +31,53 @@
         <!-- Left side - Clickable Canelé -->
         <div class="w-2/3 flex items-center justify-center">
             <img id="start-oven" src="assets/bouchee2-1.png" alt="Canelé" 
-                class="w-64 h-64 object-contain cursor-pointer hover:scale-105 transition-transform active:scale-95"
+                class="w-128 h-128 object-contain cursor-pointer hover:scale-105 transition-transform active:scale-95"
                 onclick="cookCanele()">
         </div>
         
         <!-- Right side - Upgrades -->
-        <div class="w-1/3 bg-white bg-opacity-90 p-4">
+        <div class="w-1/3 bg-white bg-opacity-90 p-4 overflow-y-auto">
             <p class="mb-4">Vous avez <span class="text-canele-brown">0</span> cannelés</p>
-            <button id="stop-oven" class="w-full font-neucha px-4 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-100 mb-2">
-                Acheter un four (25 cannelés)
-            </button>
+            
+            <!-- Add save controls -->
+            <div class="flex gap-2 mb-4">
+                <button onclick="saveGame()" class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+                    Sauvegarder
+                </button>
+                <button onclick="resetGame()" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                    Recommencer
+                </button>
+            </div>
+            
+            <div class="space-y-2" id="upgrades-container">
+                <!-- Upgrades will be generated here -->
+            </div>
         </div>
     </div>
     <script src="cuisson.js"></script>
+    <script>
+        window.onload = function() {
+            const container = document.getElementById('upgrades-container');
+            
+            for (let type in upgrades) {
+                const upgrade = upgrades[type];
+                const button = document.createElement('button');
+                button.id = `upgrade-${type}`;
+                button.className = 'w-full font-neucha px-4 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-100 mb-2 transition-opacity duration-500 ease-in-out';
+                button.style.display = 'none';
+                button.onclick = () => buyUpgrade(type);
+                button.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div class="flex flex-col items-start">
+                            <span>${upgrade.description}</span>
+                            <span class="text-sm text-gray-600">Possédés: <span id="count-${type}">0</span></span>
+                        </div>
+                        <span class="text-canele-brown" id="cost-${type}">${upgrade.cost} cannelés</span>
+                    </div>
+                `;
+                container.appendChild(button);
+            }
+        };
+    </script>
 </body>
 </html>
