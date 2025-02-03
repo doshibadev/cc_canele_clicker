@@ -43,8 +43,6 @@ function loadGame() {
         totalCanelesEarned = saveData.totalCanelesEarned;
         ovens = saveData.ovens;
         upgrades = saveData.upgrades;
-
-        // Restart autoClicker if it was running
         if (upgrades.autoClicker.count > 0) {
             if (autoClickerInterval) {
                 clearInterval(autoClickerInterval);
@@ -65,9 +63,9 @@ function createFloatingText(x, y, amount) {
     container.style.gap = '4px';
 
     const text = document.createElement('span');
-    text.textContent = '+' + amount;  // Show actual production amount
-    text.className = 'font-neucha text-2xl font-bold text-white';  // Made text slightly larger
-    text.style.textShadow = '2px 2px 4px rgba(0,0,0,0.7)';  // Enhanced shadow for better visibility
+    text.textContent = '+' + amount;
+    text.className = 'font-neucha text-2xl font-bold text-white';
+    text.style.textShadow = '2px 2px 4px rgba(0,0,0,0.7)';
 
     const img = document.createElement('img');
     img.src = 'assets/bouchee2-1.png';
@@ -81,9 +79,9 @@ function createFloatingText(x, y, amount) {
 
     const animation = container.animate([
         { transform: 'translateY(0) scale(1)', opacity: 1 },
-        { transform: 'translateY(-100px) scale(1.2)', opacity: 0 }  // Enhanced animation
+        { transform: 'translateY(-100px) scale(1.2)', opacity: 0 }
     ], {
-        duration: 1200,  // Slightly longer duration
+        duration: 1200,
         easing: 'ease-out'
     });
 
@@ -95,14 +93,11 @@ function updateDisplay() {
     for (let element of caneleCountElements) {
         element.textContent = caneles;
     }
-    
-    // Update all upgrade buttons
     for (let type in upgrades) {
         const upgrade = upgrades[type];
         const button = document.getElementById(`upgrade-${type}`);
         const countElement = document.getElementById(`count-${type}`);
         const costElement = document.getElementById(`cost-${type}`);
-        
         if (button && countElement && costElement) {
             button.style.display = totalCanelesEarned >= upgrades[type].unlockAt ? 'block' : 'none';
             button.disabled = caneles < upgrade.cost;
@@ -124,7 +119,7 @@ function getProductionRate() {
 }
 
 function getAutoClickerRate() {
-    return upgrades.autoClicker.count; // Autoclicker produces 1 per count
+    return upgrades.autoClicker.count;
 }
 
 function cookCanele(event, isAuto = false) {
@@ -142,49 +137,36 @@ function buyUpgrade(type) {
     if (caneles >= upgrade.cost) {
         caneles -= upgrade.cost;
         upgrade.count++;
-        // Exponential cost increase based on count
         upgrade.cost = Math.floor(upgrade.cost * Math.pow(1.15, upgrade.count));
-        
         if (type === 'autoClicker') {
             if (autoClickerInterval) {
                 clearInterval(autoClickerInterval);
             }
             autoClickerInterval = setInterval(() => cookCanele(null, true), upgrade.interval);
         }
-        
         updateDisplay();
     }
 }
 
-window.onload = function() {
-    // Load saved game first
-    loadGame();
-    
-    document.getElementById('start-oven').onclick = function(e) {
-        cookCanele(e);
-    };
-    
-    // Set up upgrade button handlers
-    for (let type in upgrades) {
-        const button = document.getElementById(`upgrade-${type}`);
-        if (button) {
-            button.onclick = () => buyUpgrade(type);
-        }
-    }
-    
-    updateDisplay();
-    
-    // Auto-save every 30 seconds
-    setInterval(saveGame, 30000);
-    
-    // Save when closing/refreshing the page
-    window.onbeforeunload = saveGame;
-};
-
-// Add manual save/load buttons to prevent progress loss
 function resetGame() {
     if (confirm('Êtes-vous sûr de vouloir recommencer à zéro ?')) {
         localStorage.removeItem('caneleClickerSave');
         location.reload();
     }
 }
+
+window.onload = function() {
+    loadGame();
+    document.getElementById('start-oven').onclick = function(e) {
+        cookCanele(e);
+    };
+    for (let type in upgrades) {
+        const button = document.getElementById(`upgrade-${type}`);
+        if (button) {
+            button.onclick = () => buyUpgrade(type);
+        }
+    }
+    updateDisplay();
+    setInterval(saveGame, 30000);
+    window.onbeforeunload = saveGame;
+};

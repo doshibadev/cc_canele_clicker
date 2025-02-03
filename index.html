@@ -28,18 +28,13 @@
         <h1 class="font-pacifico text-canele-red">Canelé Clicker</h1>
     </header>
     <div class="flex flex-1">
-        <!-- Left side - Clickable Canelé -->
         <div class="w-2/3 flex items-center justify-center">
             <img id="start-oven" src="assets/bouchee2-1.png" alt="Canelé" 
                 class="w-128 h-128 object-contain cursor-pointer hover:scale-105 transition-transform active:scale-95"
                 onclick="cookCanele()">
         </div>
-        
-        <!-- Right side - Upgrades -->
         <div class="w-1/3 bg-white bg-opacity-90 p-4 overflow-y-auto">
             <p class="mb-4">Vous avez <span class="text-canele-brown">0</span> cannelés</p>
-            
-            <!-- Add save controls -->
             <div class="flex gap-2 mb-4">
                 <button onclick="saveGame()" class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">
                     Sauvegarder
@@ -48,17 +43,13 @@
                     Recommencer
                 </button>
             </div>
-            
-            <div class="space-y-2" id="upgrades-container">
-                <!-- Upgrades will be generated here -->
-            </div>
+            <div class="space-y-2" id="upgrades-container"></div>
         </div>
     </div>
     <script src="cuisson.js"></script>
     <script>
         window.onload = function() {
             const container = document.getElementById('upgrades-container');
-            
             for (let type in upgrades) {
                 const upgrade = upgrades[type];
                 const button = document.createElement('button');
